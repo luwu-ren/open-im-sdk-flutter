@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_openim_sdk/flutter_openim_sdk.dart';
 
 /// Group Information
@@ -153,7 +155,33 @@ class GroupInfo {
     city = json['city'];
     district = json['district'];
     administrativeRegion = json['administrativeRegion'];
-    tagIDs = json['tagIDs'] != null ? List<String>.from(json['tagIDs']) : null;
+    // 处理 tagIDs 可能是 List 或 String 的情况
+    if (json['tagIDs'] != null) {
+      if (json['tagIDs'] is List) {
+        tagIDs = List<String>.from(json['tagIDs']);
+      } else if (json['tagIDs'] is String) {
+        // 如果是字符串，尝试解析为 JSON
+        final tagIDsStr = json['tagIDs'] as String;
+        if (tagIDsStr.isEmpty) {
+          tagIDs = null;
+        } else {
+          try {
+            final decoded = jsonDecode(tagIDsStr);
+            if (decoded is List) {
+              tagIDs = List<String>.from(decoded);
+            } else {
+              tagIDs = null;
+            }
+          } catch (e) {
+            tagIDs = null;
+          }
+        }
+      } else {
+        tagIDs = null;
+      }
+    } else {
+      tagIDs = null;
+    }
   }
 
   Map<String, dynamic> toJson() {
