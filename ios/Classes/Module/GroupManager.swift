@@ -186,65 +186,181 @@ public class GroupManager: BaseServiceManager {
 
         let groupInfoJson = JsonUtil.toString(object: groupInfo as AnyObject)
         print("[setGroupLocation] 构建的 groupInfo JSON: \(groupInfoJson)")
+        print("[setGroupLocation] ⚠️ 注意：SDK Core 没有专门的 setGroupLocation 方法")
+        print("[setGroupLocation] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口")
+        print("[setGroupLocation] 如需调用专门的 /group/set_group_location 接口，需要 SDK Core 支持或直接发送 HTTP 请求")
         print("[setGroupLocation] 准备调用 Open_im_sdkSetGroupInfo")
 
-        Open_im_sdkSetGroupInfo(BaseCallback(result: result), operationID, groupInfoJson)
+        let callback = GroupMethodCallback(result: result, methodName: "setGroupLocation")
+        Open_im_sdkSetGroupInfo(callback, operationID, groupInfoJson)
 
-        print("[setGroupLocation] Open_im_sdkSetGroupInfo 调用完成")
+        print("[setGroupLocation] Open_im_sdkSetGroupInfo 调用完成（异步，结果将在回调中返回）")
     }
 
     func setGroupTags(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
-        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
-        if let tagIDs = methodCall["tagIDs"] as? [String] {
+        let groupID = methodCall[string: "groupID"]
+        let tagIDs = methodCall["tagIDs"] as? [String]
+        let operationID = methodCall[string: "operationID"]
+
+        print("[setGroupTags] iOS原生层收到调用")
+        print("[setGroupTags] 参数: groupID=\(groupID), tagIDs=\(String(describing: tagIDs)), operationID=\(operationID)")
+        print("[setGroupTags] ⚠️ 注意：SDK Core 没有专门的 setGroupTags 方法")
+        print("[setGroupTags] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口")
+        print("[setGroupTags] 如需调用专门的 /group/set_group_tags 接口，需要 SDK Core 支持或直接发送 HTTP 请求")
+
+        var groupInfo: [String: Any] = ["groupID": groupID]
+        if let tagIDs = tagIDs {
             groupInfo["tagIDs"] = tagIDs
         }
-        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
+
+        let groupInfoJson = JsonUtil.toString(object: groupInfo as AnyObject)
+        print("[setGroupTags] 构建的 groupInfo JSON: \(groupInfoJson)")
+        print("[setGroupTags] 准备调用 Open_im_sdkSetGroupInfo")
+
+        Open_im_sdkSetGroupInfo(BaseCallback(result: result), operationID, groupInfoJson)
+
+        print("[setGroupTags] Open_im_sdkSetGroupInfo 调用完成（异步，结果将在回调中返回）")
     }
 
     func setGroupPublic(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
-        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
-        if let isPublic = methodCall["isPublic"] as? Int {
+        let groupID = methodCall[string: "groupID"]
+        let isPublic = methodCall["isPublic"] as? Int
+        let operationID = methodCall[string: "operationID"]
+
+        print("[setGroupPublic] iOS原生层收到调用")
+        print("[setGroupPublic] 参数: groupID=\(groupID), isPublic=\(String(describing: isPublic)), operationID=\(operationID)")
+        print("[setGroupPublic] ⚠️ 注意：SDK Core 没有专门的 setGroupPublic 方法")
+        print("[setGroupPublic] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口")
+        print("[setGroupPublic] 如需调用专门的 /group/set_group_public 接口，需要 SDK Core 支持或直接发送 HTTP 请求")
+
+        var groupInfo: [String: Any] = ["groupID": groupID]
+        if let isPublic = isPublic {
             groupInfo["isPublic"] = isPublic
         }
-        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
+
+        let groupInfoJson = JsonUtil.toString(object: groupInfo as AnyObject)
+        print("[setGroupPublic] 构建的 groupInfo JSON: \(groupInfoJson)")
+        print("[setGroupPublic] 准备调用 Open_im_sdkSetGroupInfo")
+
+        let callback = GroupMethodCallback(result: result, methodName: "setGroupPublic")
+        Open_im_sdkSetGroupInfo(callback, operationID, groupInfoJson)
+
+        print("[setGroupPublic] Open_im_sdkSetGroupInfo 调用完成（异步，结果将在回调中返回）")
     }
 
     func setGroupMaxMemberCount(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
-        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
-        if let maxMemberCount = methodCall["maxMemberCount"] as? Int {
+        let groupID = methodCall[string: "groupID"]
+        let maxMemberCount = methodCall["maxMemberCount"] as? Int
+        let operationID = methodCall[string: "operationID"]
+
+        print("[setGroupMaxMemberCount] iOS原生层收到调用")
+        print("[setGroupMaxMemberCount] 参数: groupID=\(groupID), maxMemberCount=\(String(describing: maxMemberCount)), operationID=\(operationID)")
+        print("[setGroupMaxMemberCount] ⚠️ 注意：SDK Core 没有专门的 setGroupMaxMemberCount 方法")
+        print("[setGroupMaxMemberCount] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口")
+        print("[setGroupMaxMemberCount] 如需调用专门的 /group/set_group_max_member_count 接口，需要 SDK Core 支持或直接发送 HTTP 请求")
+
+        var groupInfo: [String: Any] = ["groupID": groupID]
+        if let maxMemberCount = maxMemberCount {
             groupInfo["maxMemberCount"] = maxMemberCount
         }
-        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
+
+        let groupInfoJson = JsonUtil.toString(object: groupInfo as AnyObject)
+        print("[setGroupMaxMemberCount] 构建的 groupInfo JSON: \(groupInfoJson)")
+        print("[setGroupMaxMemberCount] 准备调用 Open_im_sdkSetGroupInfo")
+
+        let callback = GroupMethodCallback(result: result, methodName: "setGroupMaxMemberCount")
+        Open_im_sdkSetGroupInfo(callback, operationID, groupInfoJson)
+
+        print("[setGroupMaxMemberCount] Open_im_sdkSetGroupInfo 调用完成（异步，结果将在回调中返回）")
     }
 
     func setGroupAdministrativeRegion(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
-        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
+        let groupID = methodCall[string: "groupID"]
         let country = methodCall[string: "country"]
+        let city = methodCall[string: "city"]
+        let district = methodCall[string: "district"]
+        let administrativeRegion = methodCall[string: "administrativeRegion"]
+        let operationID = methodCall[string: "operationID"]
+
+        print("[setGroupAdministrativeRegion] iOS原生层收到调用")
+        print("[setGroupAdministrativeRegion] 参数: groupID=\(groupID), country=\(country), city=\(city), district=\(district), administrativeRegion=\(administrativeRegion), operationID=\(operationID)")
+        print("[setGroupAdministrativeRegion] ⚠️ 注意：SDK Core 没有专门的 setGroupAdministrativeRegion 方法")
+        print("[setGroupAdministrativeRegion] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口")
+        print("[setGroupAdministrativeRegion] 如需调用专门的 /group/set_group_administrative_region 接口，需要 SDK Core 支持或直接发送 HTTP 请求")
+
+        var groupInfo: [String: Any] = ["groupID": groupID]
         if !country.isEmpty {
             groupInfo["country"] = country
         }
-        let city = methodCall[string: "city"]
         if !city.isEmpty {
             groupInfo["city"] = city
         }
-        let district = methodCall[string: "district"]
         if !district.isEmpty {
             groupInfo["district"] = district
         }
-        let administrativeRegion = methodCall[string: "administrativeRegion"]
         if !administrativeRegion.isEmpty {
             groupInfo["administrativeRegion"] = administrativeRegion
         }
-        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
+
+        let groupInfoJson = JsonUtil.toString(object: groupInfo as AnyObject)
+        print("[setGroupAdministrativeRegion] 构建的 groupInfo JSON: \(groupInfoJson)")
+        print("[setGroupAdministrativeRegion] 准备调用 Open_im_sdkSetGroupInfo")
+
+        let callback = GroupMethodCallback(result: result, methodName: "setGroupAdministrativeRegion")
+        Open_im_sdkSetGroupInfo(callback, operationID, groupInfoJson)
+
+        print("[setGroupAdministrativeRegion] Open_im_sdkSetGroupInfo 调用完成（异步，结果将在回调中返回）")
     }
 
     func setGroupSettings(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
-        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
+        let groupID = methodCall[string: "groupID"]
         let settings = methodCall[string: "settings"]
+        let operationID = methodCall[string: "operationID"]
+
+        print("[setGroupSettings] iOS原生层收到调用")
+        print("[setGroupSettings] 参数: groupID=\(groupID), settings=\(settings), operationID=\(operationID)")
+        print("[setGroupSettings] ⚠️ 注意：SDK Core 没有专门的 setGroupSettings 方法")
+        print("[setGroupSettings] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口")
+        print("[setGroupSettings] 如需调用专门的 /group/set_group_settings 接口，需要 SDK Core 支持或直接发送 HTTP 请求")
+
+        var groupInfo: [String: Any] = ["groupID": groupID]
         if !settings.isEmpty {
             groupInfo["settings"] = settings
         }
-        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
+
+        let groupInfoJson = JsonUtil.toString(object: groupInfo as AnyObject)
+        print("[setGroupSettings] 构建的 groupInfo JSON: \(groupInfoJson)")
+        print("[setGroupSettings] 准备调用 Open_im_sdkSetGroupInfo")
+
+        let callback = GroupMethodCallback(result: result, methodName: "setGroupSettings")
+        Open_im_sdkSetGroupInfo(callback, operationID, groupInfoJson)
+
+        print("[setGroupSettings] Open_im_sdkSetGroupInfo 调用完成（异步，结果将在回调中返回）")
+    }
+}
+
+// GroupMethodCallback: 带方法名日志的BaseCallback wrapper
+class GroupMethodCallback: NSObject, Open_im_sdk_callbackBaseProtocol {
+    private let result: FlutterResult
+    private let methodName: String
+    
+    init(result: @escaping FlutterResult, methodName: String) {
+        self.result = result
+        self.methodName = methodName
+    }
+    
+    public func onError(_ errCode: Int32, errMsg: String?) {
+        print("[\(methodName)] SDK Core 回调失败，错误码: \(errCode), 错误消息: \(errMsg ?? "")")
+        print("[\(methodName)] 注意：当前调用的是通用 setGroupInfo 接口，实际请求路径是 /group/set_group_info_ex")
+        print("[\(methodName)] 如需调用专门的接口，需要 SDK Core 支持或直接发送 HTTP 请求")
+        safeMainAsync { self.result(FlutterError(code: "\(errCode)", message: errMsg, details: nil)) }
+    }
+    
+    public func onSuccess(_ data: String?) {
+        print("[\(methodName)] SDK Core 回调成功，响应数据: \(data ?? "")")
+        print("[\(methodName)] 注意：当前调用的是通用 setGroupInfo 接口，实际请求路径是 /group/set_group_info_ex")
+        print("[\(methodName)] 如需调用专门的接口，需要 SDK Core 支持或直接发送 HTTP 请求")
+        safeMainAsync { self.result(data) }
     }
 }
 
