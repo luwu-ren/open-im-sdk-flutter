@@ -342,11 +342,23 @@ FOUNDATION_EXPORT void Open_im_sdkSetCustomBusinessListener(id<Open_im_sdk_callb
 
 FOUNDATION_EXPORT void Open_im_sdkSetFriendListener(id<Open_im_sdk_callbackOnFriendshipListener> _Nullable listener);
 
+FOUNDATION_EXPORT void Open_im_sdkSetGroupAdministrativeRegion(id<Open_im_sdk_callbackBase> _Nullable callback, NSString* _Nullable operationID, NSString* _Nullable groupID, NSString* _Nullable country, NSString* _Nullable city, NSString* _Nullable district, NSString* _Nullable administrativeRegion);
+
 FOUNDATION_EXPORT void Open_im_sdkSetGroupInfo(id<Open_im_sdk_callbackBase> _Nullable callback, NSString* _Nullable operationID, NSString* _Nullable groupInfo);
 
 FOUNDATION_EXPORT void Open_im_sdkSetGroupListener(id<Open_im_sdk_callbackOnGroupListener> _Nullable listener);
 
+FOUNDATION_EXPORT void Open_im_sdkSetGroupLocation(id<Open_im_sdk_callbackBase> _Nullable callback, NSString* _Nullable operationID, NSString* _Nullable groupID, double latitude, double longitude, NSString* _Nullable locationAddress);
+
+FOUNDATION_EXPORT void Open_im_sdkSetGroupMaxMemberCount(id<Open_im_sdk_callbackBase> _Nullable callback, NSString* _Nullable operationID, NSString* _Nullable groupID, int32_t maxMemberCount);
+
 FOUNDATION_EXPORT void Open_im_sdkSetGroupMemberInfo(id<Open_im_sdk_callbackBase> _Nullable callback, NSString* _Nullable operationID, NSString* _Nullable groupMemberInfo);
+
+FOUNDATION_EXPORT void Open_im_sdkSetGroupPublic(id<Open_im_sdk_callbackBase> _Nullable callback, NSString* _Nullable operationID, NSString* _Nullable groupID, int32_t isPublic);
+
+FOUNDATION_EXPORT void Open_im_sdkSetGroupSettings(id<Open_im_sdk_callbackBase> _Nullable callback, NSString* _Nullable operationID, NSString* _Nullable groupID, NSString* _Nullable settings);
+
+FOUNDATION_EXPORT void Open_im_sdkSetGroupTags(id<Open_im_sdk_callbackBase> _Nullable callback, NSString* _Nullable operationID, NSString* _Nullable groupID, NSString* _Nullable tagIDs);
 
 FOUNDATION_EXPORT void Open_im_sdkSetMessageKvInfoListener(id<Open_im_sdk_callbackOnMessageKvInfoListener> _Nullable listener);
 
