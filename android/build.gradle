@@ -12,13 +12,11 @@ buildscript {
     }
 }
 
-rootProject.allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        flatDir {
-            dirs 'libs'
-        }
+repositories {
+    google()
+    mavenCentral()
+    flatDir {
+        dirs file('libs')
     }
 }
 
