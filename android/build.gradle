@@ -15,9 +15,6 @@ buildscript {
 repositories {
     google()
     mavenCentral()
-    flatDir {
-        dirs file('libs')
-    }
 }
 
 apply plugin: "com.android.library"
@@ -37,7 +34,7 @@ android {
     }
 
     dependencies {
-        implementation(name: 'core-sdk', ext: 'aar')
+        implementation files('libs/core-sdk.aar')
         testImplementation("junit:junit:4.13.2")
         testImplementation("org.mockito:mockito-core:5.0.0")
     }
