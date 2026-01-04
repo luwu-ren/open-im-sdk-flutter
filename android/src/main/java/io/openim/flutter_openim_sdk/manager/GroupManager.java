@@ -4,7 +4,12 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.openim.flutter_openim_sdk.listener.OnBaseListener;
 import io.openim.flutter_openim_sdk.listener.OnGroupListener;
+import io.openim.flutter_openim_sdk.util.JsonUtil;
 import open_im_sdk.Open_im_sdk;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GroupManager extends BaseManager {
 
@@ -247,6 +252,108 @@ public class GroupManager extends BaseManager {
         Open_im_sdk.getGroupApplicationUnhandledCount(new OnBaseListener(result, methodCall),
                 value(methodCall, "operationID"),
                 jsonValue(methodCall, "req")
+        );
+    }
+
+    public void setGroupLocation(MethodCall methodCall, MethodChannel.Result result) {
+        Map<String, Object> groupInfo = new HashMap<>();
+        groupInfo.put("groupID", value(methodCall, "groupID"));
+        Object latitude = methodCall.argument("latitude");
+        if (latitude != null) {
+            groupInfo.put("latitude", latitude);
+        }
+        Object longitude = methodCall.argument("longitude");
+        if (longitude != null) {
+            groupInfo.put("longitude", longitude);
+        }
+        String location = value(methodCall, "location");
+        if (location != null && !location.isEmpty()) {
+            groupInfo.put("location", location);
+        }
+        String locationAddress = value(methodCall, "locationAddress");
+        if (locationAddress != null && !locationAddress.isEmpty()) {
+            groupInfo.put("locationAddress", locationAddress);
+        }
+        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+                value(methodCall, "operationID"),
+                JsonUtil.toString(groupInfo)
+        );
+    }
+
+    public void setGroupTags(MethodCall methodCall, MethodChannel.Result result) {
+        Map<String, Object> groupInfo = new HashMap<>();
+        groupInfo.put("groupID", value(methodCall, "groupID"));
+        List<String> tagIDs = methodCall.argument("tagIDs");
+        if (tagIDs != null) {
+            groupInfo.put("tagIDs", tagIDs);
+        }
+        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+                value(methodCall, "operationID"),
+                JsonUtil.toString(groupInfo)
+        );
+    }
+
+    public void setGroupPublic(MethodCall methodCall, MethodChannel.Result result) {
+        Map<String, Object> groupInfo = new HashMap<>();
+        groupInfo.put("groupID", value(methodCall, "groupID"));
+        Integer isPublic = methodCall.argument("isPublic");
+        if (isPublic != null) {
+            groupInfo.put("isPublic", isPublic);
+        }
+        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+                value(methodCall, "operationID"),
+                JsonUtil.toString(groupInfo)
+        );
+    }
+
+    public void setGroupMaxMemberCount(MethodCall methodCall, MethodChannel.Result result) {
+        Map<String, Object> groupInfo = new HashMap<>();
+        groupInfo.put("groupID", value(methodCall, "groupID"));
+        Integer maxMemberCount = methodCall.argument("maxMemberCount");
+        if (maxMemberCount != null) {
+            groupInfo.put("maxMemberCount", maxMemberCount);
+        }
+        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+                value(methodCall, "operationID"),
+                JsonUtil.toString(groupInfo)
+        );
+    }
+
+    public void setGroupAdministrativeRegion(MethodCall methodCall, MethodChannel.Result result) {
+        Map<String, Object> groupInfo = new HashMap<>();
+        groupInfo.put("groupID", value(methodCall, "groupID"));
+        String country = value(methodCall, "country");
+        if (country != null && !country.isEmpty()) {
+            groupInfo.put("country", country);
+        }
+        String city = value(methodCall, "city");
+        if (city != null && !city.isEmpty()) {
+            groupInfo.put("city", city);
+        }
+        String district = value(methodCall, "district");
+        if (district != null && !district.isEmpty()) {
+            groupInfo.put("district", district);
+        }
+        String administrativeRegion = value(methodCall, "administrativeRegion");
+        if (administrativeRegion != null && !administrativeRegion.isEmpty()) {
+            groupInfo.put("administrativeRegion", administrativeRegion);
+        }
+        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+                value(methodCall, "operationID"),
+                JsonUtil.toString(groupInfo)
+        );
+    }
+
+    public void setGroupSettings(MethodCall methodCall, MethodChannel.Result result) {
+        Map<String, Object> groupInfo = new HashMap<>();
+        groupInfo.put("groupID", value(methodCall, "groupID"));
+        String settings = value(methodCall, "settings");
+        if (settings != null && !settings.isEmpty()) {
+            groupInfo.put("settings", settings);
+        }
+        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+                value(methodCall, "operationID"),
+                JsonUtil.toString(groupInfo)
         );
     }
 }

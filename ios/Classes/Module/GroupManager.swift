@@ -32,7 +32,13 @@ public class GroupManager: BaseServiceManager {
         self["setGroupListener"] = setGroupListener
         self["setGroupMemberInfo"] = setGroupMemberInfo
         self["transferGroupOwner"] = transferGroupOwner
-        self["getGroupApplicationUnhandledCount"] = getGroupApplicationUnhandledCount   
+        self["getGroupApplicationUnhandledCount"] = getGroupApplicationUnhandledCount
+        self["setGroupLocation"] = setGroupLocation
+        self["setGroupTags"] = setGroupTags
+        self["setGroupPublic"] = setGroupPublic
+        self["setGroupMaxMemberCount"] = setGroupMaxMemberCount
+        self["setGroupAdministrativeRegion"] = setGroupAdministrativeRegion
+        self["setGroupSettings"] = setGroupSettings
     }
 
     func acceptGroupApplication(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -151,6 +157,79 @@ public class GroupManager: BaseServiceManager {
 
     func getGroupApplicationUnhandledCount(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
         Open_im_sdkGetGroupApplicationUnhandledCount(BaseCallback(result: result), methodCall[string: "operationID"], methodCall[jsonString: "req"])
+    }
+
+    func setGroupLocation(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
+        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
+        if let latitude = methodCall["latitude"] as? Double {
+            groupInfo["latitude"] = latitude
+        }
+        if let longitude = methodCall["longitude"] as? Double {
+            groupInfo["longitude"] = longitude
+        }
+        let location = methodCall[string: "location"]
+        if !location.isEmpty {
+            groupInfo["location"] = location
+        }
+        let locationAddress = methodCall[string: "locationAddress"]
+        if !locationAddress.isEmpty {
+            groupInfo["locationAddress"] = locationAddress
+        }
+        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
+    }
+
+    func setGroupTags(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
+        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
+        if let tagIDs = methodCall["tagIDs"] as? [String] {
+            groupInfo["tagIDs"] = tagIDs
+        }
+        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
+    }
+
+    func setGroupPublic(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
+        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
+        if let isPublic = methodCall["isPublic"] as? Int {
+            groupInfo["isPublic"] = isPublic
+        }
+        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
+    }
+
+    func setGroupMaxMemberCount(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
+        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
+        if let maxMemberCount = methodCall["maxMemberCount"] as? Int {
+            groupInfo["maxMemberCount"] = maxMemberCount
+        }
+        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
+    }
+
+    func setGroupAdministrativeRegion(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
+        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
+        let country = methodCall[string: "country"]
+        if !country.isEmpty {
+            groupInfo["country"] = country
+        }
+        let city = methodCall[string: "city"]
+        if !city.isEmpty {
+            groupInfo["city"] = city
+        }
+        let district = methodCall[string: "district"]
+        if !district.isEmpty {
+            groupInfo["district"] = district
+        }
+        let administrativeRegion = methodCall[string: "administrativeRegion"]
+        if !administrativeRegion.isEmpty {
+            groupInfo["administrativeRegion"] = administrativeRegion
+        }
+        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
+    }
+
+    func setGroupSettings(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
+        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
+        let settings = methodCall[string: "settings"]
+        if !settings.isEmpty {
+            groupInfo["settings"] = settings
+        }
+        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
     }
 }
 
