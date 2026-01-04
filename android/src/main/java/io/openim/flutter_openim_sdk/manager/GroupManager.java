@@ -281,19 +281,21 @@ public class GroupManager extends BaseManager {
             groupInfo.put("locationAddress", locationAddress);
         }
 
-        String groupInfoJson = JsonUtil.toString(groupInfo);
-        io.flutter.Log.i("GroupManager", "[setGroupLocation] 构建的 groupInfo JSON: " + groupInfoJson);
-        io.flutter.Log.i("GroupManager", "[setGroupLocation] ⚠️ 注意：SDK Core 没有专门的 setGroupLocation 方法");
-        io.flutter.Log.i("GroupManager", "[setGroupLocation] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口");
-        io.flutter.Log.i("GroupManager", "[setGroupLocation] 如需调用专门的 /group/set_group_location 接口，需要 SDK Core 支持或直接发送 HTTP 请求");
-        io.flutter.Log.i("GroupManager", "[setGroupLocation] 准备调用 Open_im_sdk.setGroupInfo");
+        io.flutter.Log.i("GroupManager", "[setGroupLocation] 准备调用 Open_im_sdk.setGroupLocation（专用接口）");
+        io.flutter.Log.i("GroupManager", "[setGroupLocation] 将调用专门的 /group/set_group_location 接口");
 
-        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+        double lat = latitude != null ? ((Number) latitude).doubleValue() : 0.0;
+        double lon = longitude != null ? ((Number) longitude).doubleValue() : 0.0;
+
+        Open_im_sdk.setGroupLocation(new OnBaseListener(result, methodCall),
                 operationID,
-                groupInfoJson
+                groupID,
+                lat,
+                lon,
+                locationAddress != null ? locationAddress : ""
         );
 
-        io.flutter.Log.i("GroupManager", "[setGroupLocation] Open_im_sdk.setGroupInfo 调用完成（异步，结果将在回调中返回）");
+        io.flutter.Log.i("GroupManager", "[setGroupLocation] Open_im_sdk.setGroupLocation 调用完成（异步，结果将在回调中返回）");
     }
 
     public void setGroupTags(MethodCall methodCall, MethodChannel.Result result) {
@@ -303,26 +305,18 @@ public class GroupManager extends BaseManager {
 
         io.flutter.Log.i("GroupManager", "[setGroupTags] Android原生层收到调用");
         io.flutter.Log.i("GroupManager", "[setGroupTags] 参数: groupID=" + groupID + ", tagIDs=" + tagIDs + ", operationID=" + operationID);
-        io.flutter.Log.i("GroupManager", "[setGroupTags] ⚠️ 注意：SDK Core 没有专门的 setGroupTags 方法");
-        io.flutter.Log.i("GroupManager", "[setGroupTags] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口");
-        io.flutter.Log.i("GroupManager", "[setGroupTags] 如需调用专门的 /group/set_group_tags 接口，需要 SDK Core 支持或直接发送 HTTP 请求");
+        io.flutter.Log.i("GroupManager", "[setGroupTags] 准备调用 Open_im_sdk.setGroupTags（专用接口）");
+        io.flutter.Log.i("GroupManager", "[setGroupTags] 将调用专门的 /group/set_group_tags 接口");
 
-        Map<String, Object> groupInfo = new HashMap<>();
-        groupInfo.put("groupID", groupID);
-        if (tagIDs != null) {
-            groupInfo.put("tagIDs", tagIDs);
-        }
+        String tagIDsJson = tagIDs != null ? JsonUtil.toString(tagIDs) : "[]";
 
-        String groupInfoJson = JsonUtil.toString(groupInfo);
-        io.flutter.Log.i("GroupManager", "[setGroupTags] 构建的 groupInfo JSON: " + groupInfoJson);
-        io.flutter.Log.i("GroupManager", "[setGroupTags] 准备调用 Open_im_sdk.setGroupInfo");
-
-        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+        Open_im_sdk.setGroupTags(new OnBaseListener(result, methodCall),
                 operationID,
-                groupInfoJson
+                groupID,
+                tagIDsJson
         );
 
-        io.flutter.Log.i("GroupManager", "[setGroupTags] Open_im_sdk.setGroupInfo 调用完成（异步，结果将在回调中返回）");
+        io.flutter.Log.i("GroupManager", "[setGroupTags] Open_im_sdk.setGroupTags 调用完成（异步，结果将在回调中返回）");
     }
 
     public void setGroupPublic(MethodCall methodCall, MethodChannel.Result result) {
@@ -332,26 +326,18 @@ public class GroupManager extends BaseManager {
 
         io.flutter.Log.i("GroupManager", "[setGroupPublic] Android原生层收到调用");
         io.flutter.Log.i("GroupManager", "[setGroupPublic] 参数: groupID=" + groupID + ", isPublic=" + isPublic + ", operationID=" + operationID);
-        io.flutter.Log.i("GroupManager", "[setGroupPublic] ⚠️ 注意：SDK Core 没有专门的 setGroupPublic 方法");
-        io.flutter.Log.i("GroupManager", "[setGroupPublic] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口");
-        io.flutter.Log.i("GroupManager", "[setGroupPublic] 如需调用专门的 /group/set_group_public 接口，需要 SDK Core 支持或直接发送 HTTP 请求");
+        io.flutter.Log.i("GroupManager", "[setGroupPublic] 准备调用 Open_im_sdk.setGroupPublic（专用接口）");
+        io.flutter.Log.i("GroupManager", "[setGroupPublic] 将调用专门的 /group/set_group_public 接口");
 
-        Map<String, Object> groupInfo = new HashMap<>();
-        groupInfo.put("groupID", groupID);
-        if (isPublic != null) {
-            groupInfo.put("isPublic", isPublic);
-        }
+        int isPublicValue = isPublic != null ? isPublic : 0;
 
-        String groupInfoJson = JsonUtil.toString(groupInfo);
-        io.flutter.Log.i("GroupManager", "[setGroupPublic] 构建的 groupInfo JSON: " + groupInfoJson);
-        io.flutter.Log.i("GroupManager", "[setGroupPublic] 准备调用 Open_im_sdk.setGroupInfo");
-
-        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+        Open_im_sdk.setGroupPublic(new OnBaseListener(result, methodCall),
                 operationID,
-                groupInfoJson
+                groupID,
+                isPublicValue
         );
 
-        io.flutter.Log.i("GroupManager", "[setGroupPublic] Open_im_sdk.setGroupInfo 调用完成（异步，结果将在回调中返回）");
+        io.flutter.Log.i("GroupManager", "[setGroupPublic] Open_im_sdk.setGroupPublic 调用完成（异步，结果将在回调中返回）");
     }
 
     public void setGroupMaxMemberCount(MethodCall methodCall, MethodChannel.Result result) {
@@ -361,26 +347,18 @@ public class GroupManager extends BaseManager {
 
         io.flutter.Log.i("GroupManager", "[setGroupMaxMemberCount] Android原生层收到调用");
         io.flutter.Log.i("GroupManager", "[setGroupMaxMemberCount] 参数: groupID=" + groupID + ", maxMemberCount=" + maxMemberCount + ", operationID=" + operationID);
-        io.flutter.Log.i("GroupManager", "[setGroupMaxMemberCount] ⚠️ 注意：SDK Core 没有专门的 setGroupMaxMemberCount 方法");
-        io.flutter.Log.i("GroupManager", "[setGroupMaxMemberCount] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口");
-        io.flutter.Log.i("GroupManager", "[setGroupMaxMemberCount] 如需调用专门的 /group/set_group_max_member_count 接口，需要 SDK Core 支持或直接发送 HTTP 请求");
+        io.flutter.Log.i("GroupManager", "[setGroupMaxMemberCount] 准备调用 Open_im_sdk.setGroupMaxMemberCount（专用接口）");
+        io.flutter.Log.i("GroupManager", "[setGroupMaxMemberCount] 将调用专门的 /group/set_group_max_member_count 接口");
 
-        Map<String, Object> groupInfo = new HashMap<>();
-        groupInfo.put("groupID", groupID);
-        if (maxMemberCount != null) {
-            groupInfo.put("maxMemberCount", maxMemberCount);
-        }
+        int maxCount = maxMemberCount != null ? maxMemberCount : 0;
 
-        String groupInfoJson = JsonUtil.toString(groupInfo);
-        io.flutter.Log.i("GroupManager", "[setGroupMaxMemberCount] 构建的 groupInfo JSON: " + groupInfoJson);
-        io.flutter.Log.i("GroupManager", "[setGroupMaxMemberCount] 准备调用 Open_im_sdk.setGroupInfo");
-
-        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+        Open_im_sdk.setGroupMaxMemberCount(new OnBaseListener(result, methodCall),
                 operationID,
-                groupInfoJson
+                groupID,
+                maxCount
         );
 
-        io.flutter.Log.i("GroupManager", "[setGroupMaxMemberCount] Open_im_sdk.setGroupInfo 调用完成（异步，结果将在回调中返回）");
+        io.flutter.Log.i("GroupManager", "[setGroupMaxMemberCount] Open_im_sdk.setGroupMaxMemberCount 调用完成（异步，结果将在回调中返回）");
     }
 
     public void setGroupAdministrativeRegion(MethodCall methodCall, MethodChannel.Result result) {
@@ -393,35 +371,19 @@ public class GroupManager extends BaseManager {
 
         io.flutter.Log.i("GroupManager", "[setGroupAdministrativeRegion] Android原生层收到调用");
         io.flutter.Log.i("GroupManager", "[setGroupAdministrativeRegion] 参数: groupID=" + groupID + ", country=" + country + ", city=" + city + ", district=" + district + ", administrativeRegion=" + administrativeRegion + ", operationID=" + operationID);
-        io.flutter.Log.i("GroupManager", "[setGroupAdministrativeRegion] ⚠️ 注意：SDK Core 没有专门的 setGroupAdministrativeRegion 方法");
-        io.flutter.Log.i("GroupManager", "[setGroupAdministrativeRegion] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口");
-        io.flutter.Log.i("GroupManager", "[setGroupAdministrativeRegion] 如需调用专门的 /group/set_group_administrative_region 接口，需要 SDK Core 支持或直接发送 HTTP 请求");
+        io.flutter.Log.i("GroupManager", "[setGroupAdministrativeRegion] 准备调用 Open_im_sdk.setGroupAdministrativeRegion（专用接口）");
+        io.flutter.Log.i("GroupManager", "[setGroupAdministrativeRegion] 将调用专门的 /group/set_group_administrative_region 接口");
 
-        Map<String, Object> groupInfo = new HashMap<>();
-        groupInfo.put("groupID", groupID);
-        if (country != null && !country.isEmpty()) {
-            groupInfo.put("country", country);
-        }
-        if (city != null && !city.isEmpty()) {
-            groupInfo.put("city", city);
-        }
-        if (district != null && !district.isEmpty()) {
-            groupInfo.put("district", district);
-        }
-        if (administrativeRegion != null && !administrativeRegion.isEmpty()) {
-            groupInfo.put("administrativeRegion", administrativeRegion);
-        }
-
-        String groupInfoJson = JsonUtil.toString(groupInfo);
-        io.flutter.Log.i("GroupManager", "[setGroupAdministrativeRegion] 构建的 groupInfo JSON: " + groupInfoJson);
-        io.flutter.Log.i("GroupManager", "[setGroupAdministrativeRegion] 准备调用 Open_im_sdk.setGroupInfo");
-
-        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+        Open_im_sdk.setGroupAdministrativeRegion(new OnBaseListener(result, methodCall),
                 operationID,
-                groupInfoJson
+                groupID,
+                country != null ? country : "",
+                city != null ? city : "",
+                district != null ? district : "",
+                administrativeRegion != null ? administrativeRegion : ""
         );
 
-        io.flutter.Log.i("GroupManager", "[setGroupAdministrativeRegion] Open_im_sdk.setGroupInfo 调用完成（异步，结果将在回调中返回）");
+        io.flutter.Log.i("GroupManager", "[setGroupAdministrativeRegion] Open_im_sdk.setGroupAdministrativeRegion 调用完成（异步，结果将在回调中返回）");
     }
 
     public void setGroupSettings(MethodCall methodCall, MethodChannel.Result result) {
@@ -431,25 +393,15 @@ public class GroupManager extends BaseManager {
 
         io.flutter.Log.i("GroupManager", "[setGroupSettings] Android原生层收到调用");
         io.flutter.Log.i("GroupManager", "[setGroupSettings] 参数: groupID=" + groupID + ", settings=" + settings + ", operationID=" + operationID);
-        io.flutter.Log.i("GroupManager", "[setGroupSettings] ⚠️ 注意：SDK Core 没有专门的 setGroupSettings 方法");
-        io.flutter.Log.i("GroupManager", "[setGroupSettings] 将使用通用 setGroupInfo 方法，实际调用 /group/set_group_info_ex 接口");
-        io.flutter.Log.i("GroupManager", "[setGroupSettings] 如需调用专门的 /group/set_group_settings 接口，需要 SDK Core 支持或直接发送 HTTP 请求");
+        io.flutter.Log.i("GroupManager", "[setGroupSettings] 准备调用 Open_im_sdk.setGroupSettings（专用接口）");
+        io.flutter.Log.i("GroupManager", "[setGroupSettings] 将调用专门的 /group/set_group_settings 接口");
 
-        Map<String, Object> groupInfo = new HashMap<>();
-        groupInfo.put("groupID", groupID);
-        if (settings != null && !settings.isEmpty()) {
-            groupInfo.put("settings", settings);
-        }
-
-        String groupInfoJson = JsonUtil.toString(groupInfo);
-        io.flutter.Log.i("GroupManager", "[setGroupSettings] 构建的 groupInfo JSON: " + groupInfoJson);
-        io.flutter.Log.i("GroupManager", "[setGroupSettings] 准备调用 Open_im_sdk.setGroupInfo");
-
-        Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
+        Open_im_sdk.setGroupSettings(new OnBaseListener(result, methodCall),
                 operationID,
-                groupInfoJson
+                groupID,
+                settings != null ? settings : ""
         );
 
-        io.flutter.Log.i("GroupManager", "[setGroupSettings] Open_im_sdk.setGroupInfo 调用完成（异步，结果将在回调中返回）");
+        io.flutter.Log.i("GroupManager", "[setGroupSettings] Open_im_sdk.setGroupSettings 调用完成（异步，结果将在回调中返回）");
     }
 }

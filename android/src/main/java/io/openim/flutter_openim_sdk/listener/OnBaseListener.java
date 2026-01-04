@@ -26,6 +26,7 @@ public class OnBaseListener implements Base {
             "setGroupPublic".equals(call.method) || "setGroupMaxMemberCount".equals(call.method) ||
             "setGroupAdministrativeRegion".equals(call.method) || "setGroupSettings".equals(call.method)) {
             Log.i("GroupManager", "[" + call.method + "] SDK Core 回调失败，错误码: " + l + ", 错误消息: " + s);
+            Log.i("GroupManager", "[" + call.method + "] 已调用专用接口，不再是通用 setGroupInfo");
         }
         CommonUtil.runMainThreadReturnError(result, l, s, null);
     }
@@ -39,8 +40,7 @@ public class OnBaseListener implements Base {
             "setGroupPublic".equals(call.method) || "setGroupMaxMemberCount".equals(call.method) ||
             "setGroupAdministrativeRegion".equals(call.method) || "setGroupSettings".equals(call.method)) {
             Log.i("GroupManager", "[" + call.method + "] SDK Core 回调成功，响应数据: " + s);
-            Log.i("GroupManager", "[" + call.method + "] 注意：当前调用的是通用 setGroupInfo 接口，实际请求路径是 /group/set_group_info_ex");
-            Log.i("GroupManager", "[" + call.method + "] 如需调用专门的接口，需要 SDK Core 支持或直接发送 HTTP 请求");
+            Log.i("GroupManager", "[" + call.method + "] 已调用专用接口，不再是通用 setGroupInfo");
         }
         CommonUtil.runMainThreadReturn(result, s);
     }
