@@ -256,28 +256,41 @@ public class GroupManager extends BaseManager {
     }
 
     public void setGroupLocation(MethodCall methodCall, MethodChannel.Result result) {
-        Map<String, Object> groupInfo = new HashMap<>();
-        groupInfo.put("groupID", value(methodCall, "groupID"));
+        String groupID = value(methodCall, "groupID");
         Object latitude = methodCall.argument("latitude");
+        Object longitude = methodCall.argument("longitude");
+        String location = value(methodCall, "location");
+        String locationAddress = value(methodCall, "locationAddress");
+        String operationID = value(methodCall, "operationID");
+
+        io.flutter.Log.i("GroupManager", "[setGroupLocation] Android原生层收到调用");
+        io.flutter.Log.i("GroupManager", "[setGroupLocation] 参数: groupID=" + groupID + ", latitude=" + latitude + ", longitude=" + longitude + ", location=" + location + ", locationAddress=" + locationAddress + ", operationID=" + operationID);
+
+        Map<String, Object> groupInfo = new HashMap<>();
+        groupInfo.put("groupID", groupID);
         if (latitude != null) {
             groupInfo.put("latitude", latitude);
         }
-        Object longitude = methodCall.argument("longitude");
         if (longitude != null) {
             groupInfo.put("longitude", longitude);
         }
-        String location = value(methodCall, "location");
         if (location != null && !location.isEmpty()) {
             groupInfo.put("location", location);
         }
-        String locationAddress = value(methodCall, "locationAddress");
         if (locationAddress != null && !locationAddress.isEmpty()) {
             groupInfo.put("locationAddress", locationAddress);
         }
+
+        String groupInfoJson = JsonUtil.toString(groupInfo);
+        io.flutter.Log.i("GroupManager", "[setGroupLocation] 构建的 groupInfo JSON: " + groupInfoJson);
+        io.flutter.Log.i("GroupManager", "[setGroupLocation] 准备调用 Open_im_sdk.setGroupInfo");
+
         Open_im_sdk.setGroupInfo(new OnBaseListener(result, methodCall),
-                value(methodCall, "operationID"),
-                JsonUtil.toString(groupInfo)
+                operationID,
+                groupInfoJson
         );
+
+        io.flutter.Log.i("GroupManager", "[setGroupLocation] Open_im_sdk.setGroupInfo 调用完成");
     }
 
     public void setGroupTags(MethodCall methodCall, MethodChannel.Result result) {

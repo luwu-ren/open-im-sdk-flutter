@@ -690,17 +690,34 @@ class GroupManager {
       'coordinates': [longitude, latitude],
     };
 
-    return _channel.invokeMethod(
+    final opID = Utils.checkOperationID(operationID);
+    final params = {
+      'groupID': groupID,
+      'latitude': latitude,
+      'longitude': longitude,
+      'location': jsonEncode(locationJson),
+      'locationAddress': locationAddress,
+      'operationID': opID,
+    };
+
+    log('[setGroupLocation] Flutter层调用开始', name: 'GroupManager');
+    log('[setGroupLocation] 参数: groupID=$groupID, latitude=$latitude, longitude=$longitude, locationAddress=$locationAddress, operationID=$opID',
+        name: 'GroupManager');
+    log('[setGroupLocation] location JSON: ${jsonEncode(locationJson)}',
+        name: 'GroupManager');
+
+    return _channel
+        .invokeMethod(
       'setGroupLocation',
-      _buildParam({
-        'groupID': groupID,
-        'latitude': latitude,
-        'longitude': longitude,
-        'location': jsonEncode(locationJson),
-        'locationAddress': locationAddress,
-        'operationID': Utils.checkOperationID(operationID),
-      }),
-    );
+      _buildParam(params),
+    )
+        .then((result) {
+      log('[setGroupLocation] Flutter层调用成功', name: 'GroupManager');
+      return result;
+    }).catchError((error) {
+      log('[setGroupLocation] Flutter层调用失败: $error', name: 'GroupManager');
+      throw error;
+    });
   }
 
   /// Set group tags

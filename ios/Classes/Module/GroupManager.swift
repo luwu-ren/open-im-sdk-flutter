@@ -160,22 +160,37 @@ public class GroupManager: BaseServiceManager {
     }
 
     func setGroupLocation(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
-        var groupInfo: [String: Any] = ["groupID": methodCall[string: "groupID"]]
-        if let latitude = methodCall["latitude"] as? Double {
+        let groupID = methodCall[string: "groupID"]
+        let latitude = methodCall["latitude"] as? Double
+        let longitude = methodCall["longitude"] as? Double
+        let location = methodCall[string: "location"]
+        let locationAddress = methodCall[string: "locationAddress"]
+        let operationID = methodCall[string: "operationID"]
+
+        print("[setGroupLocation] iOS原生层收到调用")
+        print("[setGroupLocation] 参数: groupID=\(groupID), latitude=\(String(describing: latitude)), longitude=\(String(describing: longitude)), location=\(location), locationAddress=\(locationAddress), operationID=\(operationID)")
+
+        var groupInfo: [String: Any] = ["groupID": groupID]
+        if let latitude = latitude {
             groupInfo["latitude"] = latitude
         }
-        if let longitude = methodCall["longitude"] as? Double {
+        if let longitude = longitude {
             groupInfo["longitude"] = longitude
         }
-        let location = methodCall[string: "location"]
         if !location.isEmpty {
             groupInfo["location"] = location
         }
-        let locationAddress = methodCall[string: "locationAddress"]
         if !locationAddress.isEmpty {
             groupInfo["locationAddress"] = locationAddress
         }
-        Open_im_sdkSetGroupInfo(BaseCallback(result: result), methodCall[string: "operationID"], JsonUtil.toString(object: groupInfo as AnyObject))
+
+        let groupInfoJson = JsonUtil.toString(object: groupInfo as AnyObject)
+        print("[setGroupLocation] 构建的 groupInfo JSON: \(groupInfoJson)")
+        print("[setGroupLocation] 准备调用 Open_im_sdkSetGroupInfo")
+
+        Open_im_sdkSetGroupInfo(BaseCallback(result: result), operationID, groupInfoJson)
+
+        print("[setGroupLocation] Open_im_sdkSetGroupInfo 调用完成")
     }
 
     func setGroupTags(methodCall: FlutterMethodCall, result: @escaping FlutterResult) {
