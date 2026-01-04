@@ -53,6 +53,46 @@ class GroupInfo {
   /// Notification Initiator
   String? notificationUserID;
 
+  // 地理位置相关字段
+  /// Group Location (GeoJSON format)
+  String? location;
+
+  /// Latitude
+  double? latitude;
+
+  /// Longitude
+  double? longitude;
+
+  /// Location Address
+  String? locationAddress;
+
+  // 群组设置字段
+  /// Group Settings (JSON format)
+  String? settings;
+
+  /// Is Public Group
+  int? isPublic;
+
+  /// Max Member Count
+  int? maxMemberCount;
+
+  // 行政区域字段
+  /// Country (ISO 3166-1 alpha-2)
+  String? country;
+
+  /// City
+  String? city;
+
+  /// District
+  String? district;
+
+  /// Administrative Region (JSON format)
+  String? administrativeRegion;
+
+  // 标签字段
+  /// Tag IDs
+  List<String>? tagIDs;
+
   GroupInfo({
     required this.groupID,
     this.groupName,
@@ -71,6 +111,18 @@ class GroupInfo {
     this.applyMemberFriend,
     this.notificationUpdateTime,
     this.notificationUserID,
+    this.location,
+    this.latitude,
+    this.longitude,
+    this.locationAddress,
+    this.settings,
+    this.isPublic,
+    this.maxMemberCount,
+    this.country,
+    this.city,
+    this.district,
+    this.administrativeRegion,
+    this.tagIDs,
   });
 
   GroupInfo.fromJson(Map<String, dynamic> json) : groupID = json['groupID'] {
@@ -90,6 +142,18 @@ class GroupInfo {
     applyMemberFriend = json['applyMemberFriend'];
     notificationUpdateTime = json['notificationUpdateTime'];
     notificationUserID = json['notificationUserID'];
+    location = json['location'];
+    latitude = json['latitude']?.toDouble();
+    longitude = json['longitude']?.toDouble();
+    locationAddress = json['locationAddress'];
+    settings = json['settings'];
+    isPublic = json['isPublic'];
+    maxMemberCount = json['maxMemberCount'];
+    country = json['country'];
+    city = json['city'];
+    district = json['district'];
+    administrativeRegion = json['administrativeRegion'];
+    tagIDs = json['tagIDs'] != null ? List<String>.from(json['tagIDs']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -111,15 +175,32 @@ class GroupInfo {
     data['applyMemberFriend'] = this.applyMemberFriend;
     data['notificationUpdateTime'] = this.notificationUpdateTime;
     data['notificationUserID'] = this.notificationUserID;
+    data['location'] = this.location;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['locationAddress'] = this.locationAddress;
+    data['settings'] = this.settings;
+    data['isPublic'] = this.isPublic;
+    data['maxMemberCount'] = this.maxMemberCount;
+    data['country'] = this.country;
+    data['city'] = this.city;
+    data['district'] = this.district;
+    data['administrativeRegion'] = this.administrativeRegion;
+    data['tagIDs'] = this.tagIDs;
     return data;
   }
 
   /// Corresponding Conversation Type for Group Type
-  int get sessionType => groupType == GroupType.general ? ConversationType.group : ConversationType.superGroup;
+  int get sessionType => groupType == GroupType.general
+      ? ConversationType.group
+      : ConversationType.superGroup;
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is GroupInfo && runtimeType == other.runtimeType && groupID == other.groupID;
+      identical(this, other) ||
+      other is GroupInfo &&
+          runtimeType == other.runtimeType &&
+          groupID == other.groupID;
 
   @override
   int get hashCode => groupID.hashCode;
@@ -429,7 +510,7 @@ class GetGroupApplicationListAsRecipientReq {
   final int offset;
   final int count;
 
-  GetGroupApplicationListAsRecipientReq({ 
+  GetGroupApplicationListAsRecipientReq({
     this.groupIDs = const [],
     this.handleResults = const [],
     required this.offset,
@@ -437,10 +518,14 @@ class GetGroupApplicationListAsRecipientReq {
   });
 
   GetGroupApplicationListAsRecipientReq.fromJson(Map<String, dynamic> json)
-      : groupIDs = json['groupIDs'] == null ? [] : List<String>.from(json['groupIDs'].map((x) => x)),
-        handleResults = json['handleResults'] == null ? [] : List<int>.from(json['handleResults'].map((x) => x)),
-        offset = json['offset'],
-        count = json['count'];
+    : groupIDs = json['groupIDs'] == null
+          ? []
+          : List<String>.from(json['groupIDs'].map((x) => x)),
+      handleResults = json['handleResults'] == null
+          ? []
+          : List<int>.from(json['handleResults'].map((x) => x)),
+      offset = json['offset'],
+      count = json['count'];
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -471,10 +556,14 @@ class GetGroupApplicationListAsApplicantReq {
   });
 
   GetGroupApplicationListAsApplicantReq.fromJson(Map<String, dynamic> json)
-      : groupIDs = json['groupIDs'] == null ? [] : List<String>.from(json['groupIDs'].map((x) => x)),
-        handleResults = json['handleResults'] == null ? [] : List<int>.from(json['handleResults'].map((x) => x)),
-        offset = json['offset'],
-        count = json['count'];
+    : groupIDs = json['groupIDs'] == null
+          ? []
+          : List<String>.from(json['groupIDs'].map((x) => x)),
+      handleResults = json['handleResults'] == null
+          ? []
+          : List<int>.from(json['handleResults'].map((x) => x)),
+      offset = json['offset'],
+      count = json['count'];
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -496,7 +585,8 @@ class GetGroupApplicationUnhandledCountReq {
 
   GetGroupApplicationUnhandledCountReq({this.time = 0});
 
-  GetGroupApplicationUnhandledCountReq.fromJson(Map<String, dynamic> json) : time = json['time'];
+  GetGroupApplicationUnhandledCountReq.fromJson(Map<String, dynamic> json)
+    : time = json['time'];
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
